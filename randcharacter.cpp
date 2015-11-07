@@ -20,7 +20,6 @@ extern "C" {
 
 using namespace std;
 
-#define DEFAULT_PASS_LENGTH 16
 #define RANDOM_FILE "/dev/urandom"
 
 

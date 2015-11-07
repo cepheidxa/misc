@@ -6,17 +6,17 @@
 
 using namespace std;
 
-#define CHARACTER_LOWER_CASE 0x01 
-#define CHARACTER_UPPER_CASE 0x02
-#define CHARACTER_DIGIT 0x04
-#define CHARACTER_SYMBOL 0x08
-
 class RandCharacter {
 public:
 	RandCharacter(unsigned long type, int len);
 	~RandCharacter(void);
 	void generate(void);
 	friend ostream &operator<<(ostream &out, const RandCharacter &c);
+
+	static const unsigned long CHARACTER_LOWER_CASE = 0x01;
+	static const unsigned long CHARACTER_UPPER_CASE = 0x02;
+	static const unsigned long CHARACTER_DIGIT = 0x04;
+	static const unsigned long CHARACTER_SYMBOL = 0x08;
 private:
 	bool charValid(int ch);
 	unsigned long getRand(void);

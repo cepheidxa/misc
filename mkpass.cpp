@@ -16,6 +16,7 @@ extern "C" {
 }
 #endif
 #include "pass.h"
+#include "config.h"
 
 using namespace std;
 
@@ -48,6 +49,7 @@ int main(int argc, char *argv[])
 			break;
 		default:
 			cerr<<"Usage: %s [-a n] [-A n] [-n n] [-s n] [-N n]"<<endl;
+			cerr<<"Please report any bugs to "<<PACKAGE_BUGREPORT<<endl;
 			exit(-1);
 		}
 	}

@@ -21,7 +21,6 @@ extern "C" {
 
 using namespace std;
 
-#define DEFAULT_PASS_LENGTH 16
 #define RANDOM_FILE "/dev/urandom"
 
 Pass::Pass(int len, int alpha, int Alpha, int number, int symbol)
@@ -60,34 +59,34 @@ void Pass::generate(void)
 	int len = 0;
 	if(_alpha > 0) {
 		len += _alpha;
-		RandCharacter p(CHARACTER_LOWER_CASE, _alpha);
+		RandCharacter p(RandCharacter::CHARACTER_LOWER_CASE, _alpha);
 		out<<p;
 	}
 	if(_Alpha > 0) {
 		len += _Alpha;
-		RandCharacter p(CHARACTER_UPPER_CASE, _Alpha);
+		RandCharacter p(RandCharacter::CHARACTER_UPPER_CASE, _Alpha);
 		out<<p;
 	}
 	if(_number > 0) {
 		len += _number;
-		RandCharacter p(CHARACTER_DIGIT, _number);
+		RandCharacter p(RandCharacter::CHARACTER_DIGIT, _number);
 		out<<p;
 	}
 	if(_symbol > 0) {
 		len += _symbol;
-		RandCharacter p(CHARACTER_SYMBOL, _symbol);
+		RandCharacter p(RandCharacter::CHARACTER_SYMBOL, _symbol);
 		out<<p;
 	}
 	
 	unsigned type = 0;
 	if(_alpha >= 0)
-		type |= CHARACTER_LOWER_CASE;
+		type |= RandCharacter::CHARACTER_LOWER_CASE;
 	if(_Alpha >= 0)
-		type |= CHARACTER_UPPER_CASE;
+		type |= RandCharacter::CHARACTER_UPPER_CASE;
 	if(_number >= 0)
-		type |= CHARACTER_DIGIT;
+		type |= RandCharacter::CHARACTER_DIGIT;
 	if(_symbol >= 0)
-		type |= CHARACTER_SYMBOL;
+		type |= RandCharacter::CHARACTER_SYMBOL;
 		
 	len = _len - len;
 	if(len > 0) {
