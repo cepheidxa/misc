@@ -90,16 +90,27 @@ bool RandCharacter::charValid(int ch)
 	assert(ch >= 0 && ch <= 255);
 	if(!isgraph(ch))
 		return false;
-		
-	if(((_type & CHARACTER_LOWER_CASE) == 0) && islower(ch))
-		return false;
-	if(((_type & CHARACTER_UPPER_CASE) == 0) && isupper(ch))
-		return false;
-	if(((_type & CHARACTER_DIGIT) == 0) && isdigit(ch))
-		return false;
-	if(((_type & CHARACTER_SYMBOL) == 0) && (!isalnum(ch)))
-		return false;
 
+	if(islower(ch)) {
+		if(_type & CHARACTER_LOWER_CASE == 0)
+			return false;
+	} else if(isupper(ch)) {
+		if(_type & CHARACTER_UPPER_CASE == 0)
+			return false;
+	} else if(isdigit(ch)) {
+		if(_type & CHARACTER_DIGIT == 0)
+			return false;
+	} else if(isgraph(ch)) {
+		if(_type & CHARACTER_SYMBOL == 0)
+			return false;
+		string chars = "!@#$%^&*(){};:<>,.?";
+		string t = "1";
+		t[0] = ch;
+		if(chars.find(ch) == string::npos)
+			return false;
+	} else
+		return false;
+		
 	return true;
 }
 
