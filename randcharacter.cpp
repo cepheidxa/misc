@@ -3,120 +3,65 @@
 #include <climits>
 #include <cassert>
 #include <sstream>
-#ifdef __cplusplus
-extern "C" {
-#endif
-	#include <unistd.h>
-	#include <sys/types.h>
-	#include <sys/stat.h>
-	#include <fcntl.h>
-	#include <error.h>
-	#include <errno.h>
-#ifdef __cplusplus
-}
-#endif
 
 #include "randcharacter.h"
 
 using namespace std;
 
-#define RANDOM_FILE "/dev/urandom"
 
-
-RandCharacter::RandCharacter(unsigned long type, int len)
+RandCharacter::RandCharacter(unsigned long charType, int len, unsigned long randType)
 {
-	_type = type;
+	_charType = charType;
 	_len = len;
+	_randType = randType;
 
-	_fd = open(RANDOM_FILE, O_RDONLY);
-	if(_fd == -1)
-		error_at_line(1, errno, __FILE__, __LINE__, "%s open failed.", RANDOM_FILE);
-	
-	_p = new char[_len + 1];
-	assert(_p != NULL);
-	
-	_lchs = 0;
-	for(int i = 0; i <= 255; i++) {
-		if(charValid(i)) {
-			_lchs++;
-		}
-	}
-	assert(_lchs < 128 && _lchs > 0);
-	_chs = new char[_lchs];
-	assert(_chs != NULL);
-	int j = 0;
-	for(int i = 0; i <= 255; i++) {
-		if(charValid(i)) {
-			_chs[j++] = i;
+	for(unsigned char ch = 0; ch < 255; ch++) {
+		if(charValid(ch)) {
+			_validChars += ch;
 		}
 	}
 	generate();
 }
 
-RandCharacter::~RandCharacter(void)
-{
-	close(_fd);
-	if(_chs)
-		delete[] _chs;
-	if(_p)
-		delete[] _p;
-}
-
 void RandCharacter::generate(void)
 {
-	assert(_p != NULL);
+	assert(_validChars.length() > 0);
+	Rand rand(_randType);
 	unsigned long value;
 	for(int i = 0; i < _len; i++) {
 		do {
-			value = getRand();
-		} while(value >= ULONG_MAX - ULONG_MAX % _lchs);
-		_p[i] = _chs[value % _lchs];
+			rand.getRand(&value, sizeof(value));
+		} while(value >= ULONG_MAX - ULONG_MAX % _validChars.length());
+		_randChars += _validChars[value % _validChars.length()];
 	}
-	_p[_len] = '\0';
 	value = 0;
 }
 
-unsigned long RandCharacter::getRand(void)
-{
-	unsigned long value;
-	int ret = read(_fd, &value, sizeof(unsigned long));
-	if(ret == -1)
-		error_at_line(1, errno, __FILE__, __LINE__, "%s read failed.", RANDOM_FILE);
-	return value;
-}
-
-bool RandCharacter::charValid(int ch)
+bool RandCharacter::charValid(unsigned char ch)
 {
 	assert(ch >= 0 && ch <= 255);
 	if(!isgraph(ch))
 		return false;
 
-	if(islower(ch)) {
-		if(_type & CHARACTER_LOWER_CASE == 0)
-			return false;
-	} else if(isupper(ch)) {
-		if(_type & CHARACTER_UPPER_CASE == 0)
-			return false;
-	} else if(isdigit(ch)) {
-		if(_type & CHARACTER_DIGIT == 0)
-			return false;
-	} else if(isgraph(ch)) {
-		if(_type & CHARACTER_SYMBOL == 0)
-			return false;
-		string chars = "!@#$%^&*(){};:<>,.?";
+	if(_charType & CHARACTER_LOWER_CASE && islower(ch))
+			return true;
+	if(_charType & CHARACTER_UPPER_CASE && isupper(ch))
+			return true;
+	if(_charType & CHARACTER_DIGIT && isdigit(ch))
+			return true;
+	if(_charType & CHARACTER_SYMBOL) { 
+		string chars = "!@#$%^&*(){}[];:<>,.?";
 		string t = "1";
 		t[0] = ch;
-		if(chars.find(ch) == string::npos)
-			return false;
-	} else
-		return false;
+		if(chars.find(t) != string::npos)
+			return true;
+	}
 		
-	return true;
+	return false;
 }
 
 ostream &operator<<(ostream &out, const RandCharacter &c)
 {
-	out<<c._p;
+	out<<c._randChars;
 	return out;
 }
-

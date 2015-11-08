@@ -29,8 +29,9 @@ int main(int argc, char *argv[])
 	int Alpha = 0;
 	int number = 0;
 	int symbol = 0;
+	int use_urandom = 1; // use /dev/random or /dev/urandom
 	int opt;
-	while((opt = getopt(argc, argv, "a:A:n:s:N:")) != -1) {
+	while((opt = getopt(argc, argv, "a:A:n:s:N:r")) != -1) {
 		switch(opt) {
 		case 'a':
 			alpha = atoi(optarg);
@@ -47,14 +48,22 @@ int main(int argc, char *argv[])
 		case 'N':
 			N = atoi(optarg);
 			break;
+		case 'u':
+			use_urandom = 0;
+			break;
 		default:
-			cerr<<"Usage: %s [-a n] [-A n] [-n n] [-s n] [-N n]"<<endl;
+			cerr<<"Usage: %s [-a n] [-A n] [-n n] [-s n] [-N n] [-r]"<<endl;
 			cerr<<"Please report any bugs to "<<PACKAGE_BUGREPORT<<endl;
 			exit(-1);
 		}
 	}
 	
-	Pass p(N, alpha, Alpha, number, symbol);
+	int randtype;
+	if(use_urandom)
+		randtype = Rand::RAND_TYPE_PSEUDO_RANDOM;
+	else
+		randtype = Rand::RAND_TYPE_RANDOM;
+	Pass p(N, alpha, Alpha, number, symbol, randtype);
 	cout<<p<<endl;
 	
 }

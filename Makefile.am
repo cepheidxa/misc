@@ -1,2 +1,2 @@
 bin_PROGRAMS = mkpass
-mkpass_SOURCES = randcharacter.cpp pass.cpp mkpass.cpp
+mkpass_SOURCES = rand.cpp randcharacter.cpp pass.cpp mkpass.cpp

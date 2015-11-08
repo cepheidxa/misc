@@ -102,8 +102,8 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_mkpass_OBJECTS = randcharacter.$(OBJEXT) pass.$(OBJEXT) \
-	mkpass.$(OBJEXT)
+am_mkpass_OBJECTS = rand.$(OBJEXT) randcharacter.$(OBJEXT) \
+	pass.$(OBJEXT) mkpass.$(OBJEXT)
 mkpass_OBJECTS = $(am_mkpass_OBJECTS)
 mkpass_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
@@ -271,7 +271,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-mkpass_SOURCES = randcharacter.cpp pass.cpp mkpass.cpp
+mkpass_SOURCES = rand.cpp randcharacter.cpp pass.cpp mkpass.cpp
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -380,6 +380,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mkpass.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pass.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rand.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/randcharacter.Po@am__quote@
 
 .cpp.o:
