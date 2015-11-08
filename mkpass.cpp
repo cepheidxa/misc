@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 		case 'N':
 			N = atoi(optarg);
 			break;
-		case 'u':
+		case 'r':
 			use_urandom = 0;
 			break;
 		default:
