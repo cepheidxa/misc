@@ -65,11 +65,11 @@ void Pass::generate(void)
 	string pass = out.str();
 	assert(pass.length() == _len);
 	for(int i = 0; i < _len - 1; i++) {
-		unsigned long v;
+		unsigned char v;
 		Rand rand(_randType);
 		do {
 			rand.getRand(&v, sizeof(v));
-		} while(v >= ULONG_MAX - ULONG_MAX % (_len - i));
+		} while(v >= UCHAR_MAX - UCHAR_MAX % (_len - i));
 		int pos = v % (_len - i);
 		char tmp = pass[i];
 		pass[i] = pass[ i + pos];

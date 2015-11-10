@@ -27,11 +27,11 @@ void RandCharacter::generate(void)
 {
 	assert(_validChars.length() > 0);
 	Rand rand(_randType);
-	unsigned long value;
+	unsigned char value;
 	for(int i = 0; i < _len; i++) {
 		do {
 			rand.getRand(&value, sizeof(value));
-		} while(value >= ULONG_MAX - ULONG_MAX % _validChars.length());
+		} while(value >= UCHAR_MAX - UCHAR_MAX % _validChars.length());
 		_randChars += _validChars[value % _validChars.length()];
 	}
 	value = 0;
