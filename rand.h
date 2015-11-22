@@ -7,8 +7,8 @@ public:
 	~Rand(void);
 	void getRand(void *data, int len);
 	
-	static const unsigned long long RAND_TYPE_PSEUDO_RANDOM = 0x01;
-	static const unsigned long long RAND_TYPE_RANDOM = 0x02;
+	static const unsigned long RAND_TYPE_PSEUDO_RANDOM = 0x01;
+	static const unsigned long RAND_TYPE_RANDOM = 0x02;
 private:
 	unsigned long _type;
 	int _fd;

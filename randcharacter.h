@@ -2,10 +2,11 @@
 #define RAND_CHARACTER_H_H_H
 
 #include <iostream>
-#include <sstream>
+#include <string>
 #include "rand.h"
 
-using namespace std;
+using std::ostream;
+using std::string;
 
 class RandCharacter {
 public:
